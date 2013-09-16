@@ -33,17 +33,14 @@ namespace Assets.Scripts.MyGameScripts.Gameplay.Entities
         [HideInInspector]
         public Vector3 Velocity
         {
-            get
-            {
-                return _velocity;
-            }
+            get { return _velocity; }
         }
 
         protected override void Start()
         {
             base.Start();
 
-            Telekenisis = new Telekinesis(this);
+            Telekenisis = this.GetComponent<Telekinesis>();
             _characterController = this.GetComponent<CharacterController>();
         }
 

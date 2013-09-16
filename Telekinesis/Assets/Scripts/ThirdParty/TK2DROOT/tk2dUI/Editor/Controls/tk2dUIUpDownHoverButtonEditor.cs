@@ -25,6 +25,10 @@ public class tk2dUIUpDownHoverButtonEditor : tk2dUIBaseItemControlEditor
             GUI.changed = true;
         }
 
+        BeginMessageGUI();
+        methodBindingUtil.MethodBinding( "On Toggle Over", typeof(tk2dUIUpDownHoverButton), upDownHoverButton.SendMessageTarget, ref upDownHoverButton.SendMessageOnToggleOverMethodName );
+        EndMessageGUI();
+
         if (GUI.changed)
         {
             EditorUtility.SetDirty(upDownHoverButton);

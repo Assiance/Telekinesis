@@ -124,6 +124,7 @@ namespace tk2dRuntime.TileMap
 
 					bool flipH = BuilderUtil.IsRawTileFlagSet(spriteId, tk2dTileFlags.FlipX);
 					bool flipV = BuilderUtil.IsRawTileFlagSet(spriteId, tk2dTileFlags.FlipY);
+					bool rot90 = BuilderUtil.IsRawTileFlagSet(spriteId, tk2dTileFlags.Rot90);
 
 					bool reverseIndices = false;
 					if (flipH) reverseIndices = !reverseIndices;
@@ -149,7 +150,7 @@ namespace tk2dRuntime.TileMap
 						pos[6] = new Vector3(max.x, max.y, min.z);
 						pos[7] = new Vector3(max.x, max.y, max.z);
 						for (int i = 0; i < 8; ++i) {
-							Vector3 flippedPos = BuilderUtil.FlipSpriteVertexPosition(tileMap, spriteData, pos[i], flipH, flipV);
+							Vector3 flippedPos = BuilderUtil.ApplySpriteVertexTileFlags(tileMap, spriteData, pos[i], flipH, flipV, rot90);
 							vertexList.Add (flippedPos + currentPos);
 						}
 	
@@ -167,7 +168,7 @@ namespace tk2dRuntime.TileMap
 					{
 						for (int i = 0; i < spriteData.colliderVertices.Length; ++i)
 						{
-							Vector3 flippedPos = BuilderUtil.FlipSpriteVertexPosition(tileMap, spriteData, spriteData.colliderVertices[i], flipH, flipV);
+							Vector3 flippedPos = BuilderUtil.ApplySpriteVertexTileFlags(tileMap, spriteData, spriteData.colliderVertices[i], flipH, flipV, rot90);
 							vertexList.Add(flippedPos + currentPos);
 						}
 						

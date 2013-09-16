@@ -109,6 +109,8 @@ public static class tk2dGuiUtility
 	/// </summary>
 	public static int InfoBoxWithButtons(string message, WarningLevel warningLevel, params string[] buttons)
 	{
+		InfoBox(message, warningLevel);
+
 		Color oldBackgroundColor = GUI.backgroundColor;
 		switch (warningLevel)
 		{
@@ -117,14 +119,6 @@ public static class tk2dGuiUtility
 		case WarningLevel.Error: GUI.backgroundColor = new Color32(255, 0, 0, 255); break;
 		}
 
-		GUILayout.BeginVertical("textarea");
-		GUI.backgroundColor = oldBackgroundColor;
-		
-		GUIStyle labelStyle = new GUIStyle("label");
-		labelStyle.wordWrap = true;
-		
-		GUILayout.Label(message, labelStyle, GUILayout.ExpandWidth(true));
-		
 		int buttonPressed = -1;
 		if (buttons != null)
 		{
@@ -137,9 +131,7 @@ public static class tk2dGuiUtility
 			}
 			GUILayout.EndHorizontal();
 		}
-		
-		GUILayout.EndVertical();
-		
+		GUI.backgroundColor = oldBackgroundColor;
 		return buttonPressed;
 	}
 

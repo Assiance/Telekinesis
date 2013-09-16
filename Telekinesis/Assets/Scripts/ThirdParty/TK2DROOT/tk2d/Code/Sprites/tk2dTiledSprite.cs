@@ -167,6 +167,7 @@ public class tk2dTiledSprite : tk2dBaseSprite
 		mesh.uv = meshUvs;
 		mesh.triangles = meshIndices;
 		mesh.RecalculateBounds();
+		mesh.bounds = AdjustedMeshBounds( mesh.bounds, renderLayer );
 		
 		GetComponent<MeshFilter>().mesh = mesh;
 		
@@ -268,5 +269,32 @@ public class tk2dTiledSprite : tk2dBaseSprite
 			return 0;
 #endif
 		return 16;
+	}
+
+	public override void ReshapeBounds(Vector3 dMin, Vector3 dMax) {
+		var sprite = CurrentSprite;
+		Vector3 oldSize = new Vector3(_dimensions.x * sprite.texelSize.x * _scale.x, _dimensions.y * sprite.texelSize.y * _scale.y);
+		Vector3 oldMin = Vector3.zero;
+		switch (_anchor) {
+			case Anchor.LowerLeft: oldMin.Set(0,0,0); break;
+			case Anchor.LowerCenter: oldMin.Set(0.5f,0,0); break;
+			case Anchor.LowerRight: oldMin.Set(1,0,0); break;
+			case Anchor.MiddleLeft: oldMin.Set(0,0.5f,0); break;
+			case Anchor.MiddleCenter: oldMin.Set(0.5f,0.5f,0); break;
+			case Anchor.MiddleRight: oldMin.Set(1,0.5f,0); break;
+			case Anchor.UpperLeft: oldMin.Set(0,1,0); break;
+			case Anchor.UpperCenter: oldMin.Set(0.5f,1,0); break;
+			case Anchor.UpperRight: oldMin.Set(1,1,0); break;
+		}
+		oldMin = Vector3.Scale(oldMin, oldSize) * -1;
+		Vector3 newDimensions = oldSize + dMax - dMin;
+		newDimensions.x /= sprite.texelSize.x * _scale.x;
+		newDimensions.y /= sprite.texelSize.y * _scale.y;
+		Vector3 scaledMin = new Vector3(Mathf.Approximately(_dimensions.x, 0) ? 0 : (oldMin.x * newDimensions.x / _dimensions.x),
+			Mathf.Approximately(_dimensions.y, 0) ? 0 : (oldMin.y * newDimensions.y / _dimensions.y));
+		Vector3 offset = oldMin + dMin - scaledMin;
+		offset.z = 0;
+		transform.position = transform.TransformPoint(offset);
+		dimensions = new Vector2(newDimensions.x, newDimensions.y);
 	}
 }

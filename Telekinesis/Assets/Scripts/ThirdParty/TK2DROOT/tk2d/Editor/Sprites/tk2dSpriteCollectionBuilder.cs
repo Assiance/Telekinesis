@@ -261,6 +261,18 @@ public class tk2dSpriteCollectionBuilder
 		}
 	}
 
+	static bool TextureRectFullySolid( Texture2D srcTex, int sx, int sy, int tw, int th ) {
+		for (int y = 0; y < th; ++y) {
+			for (int x = 0; x < tw; ++x) {
+				Color32 col = srcTex.GetPixel( sx + x, sy + y );
+				if (col.a < 255) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	static Texture2D ProcessTexture(tk2dSpriteCollection settings, bool additive, tk2dSpriteCollectionDefinition.Pad padMode, bool disableTrimming, bool isInjectedTexture, Texture2D srcTex, int sx, int sy, int tw, int th, ref SpriteLut spriteLut, int padAmount)
 	{
 		// Can't have additive without premultiplied alpha
@@ -313,7 +325,7 @@ public class tk2dSpriteCollectionBuilder
 						Vector2 vert = rawVert * settings.globalTextureRescale;
 						int minX = Mathf.FloorToInt(vert.x);
 						int maxX = Mathf.CeilToInt(vert.x);
-						float y = th - 1 - vert.y;
+						float y = th - vert.y;
 						int minY = Mathf.FloorToInt(y);
 						int maxY = Mathf.CeilToInt(y);
 						
@@ -807,6 +819,16 @@ public class tk2dSpriteCollectionBuilder
 					{
 						int tw = Mathf.Min(diceUnitX, srcTex.width - sx);
 						int th = Mathf.Min(diceUnitY, srcTex.height - sy);
+
+						if (gen.textureParams[i].diceFilter == tk2dSpriteCollectionDefinition.DiceFilter.SolidOnly &&
+							!TextureRectFullySolid( srcTex, sx, sy, tw, th )) {
+							continue;
+						}
+
+						if (gen.textureParams[i].diceFilter == tk2dSpriteCollectionDefinition.DiceFilter.TransparentOnly &&
+							TextureRectFullySolid( srcTex, sx, sy, tw, th )) {
+							continue;
+						}
 
 						SpriteLut diceLut = new SpriteLut();
 						diceLut.source = i;
@@ -1465,26 +1487,32 @@ public class tk2dSpriteCollectionBuilder
 					break;
 				}
 			}
-			
+
 			int padAmount = GetPadAmount(gen, i);
 
             tk2dSpriteCollectionDefinition thisTexParam = gen.textureParams[i];
-			tk2dEditor.Atlas.Data packer = null;
+			tk2dEditor.Atlas.Data packer = packers[0];
 			tk2dEditor.Atlas.Entry atlasEntry = null;
 			int atlasIndex = 0;
-			foreach (var p in packers)
-			{
-				if ((atlasEntry = p.FindEntryWithIndex(_lut.atlasIndex)) != null)
-				{
-					packer = p;
-					break;
+			if (_lut != null) {
+				foreach (var p in packers) {
+					if ((atlasEntry = p.FindEntryWithIndex(_lut.atlasIndex)) != null) {
+						packer = p;
+						break;
+					}
+					++atlasIndex;
 				}
-				++atlasIndex;
 			}
 			float fwidth = packer.width;
     	    float fheight = packer.height;
 
-            int tx = atlasEntry.x + padAmount, ty = atlasEntry.y + padAmount, tw = atlasEntry.w - padAmount * 2, th = atlasEntry.h - padAmount * 2;
+    	    int tx = 0, ty = 0, tw = 0, th = 0;
+    	    if (atlasEntry != null) {
+            	tx = atlasEntry.x + padAmount;
+            	ty = atlasEntry.y + padAmount;
+            	tw = atlasEntry.w - padAmount * 2;
+            	th = atlasEntry.h - padAmount * 2;
+            }
             int sd_y = packer.height - ty - th;
 
 			float uvOffsetX = 0.001f / fwidth;
@@ -1582,7 +1610,7 @@ public class tk2dSpriteCollectionBuilder
 				List<Vector2> uvs = new List<Vector2>();
 
 				// build mesh
-				if (_lut.isSplit)
+				if (_lut != null && _lut.isSplit)
 				{
 					coll.spriteDefinitions[i].flipped = tk2dSpriteDefinition.FlipMode.None; // each split could be rotated, but not consistently
 					
@@ -1703,12 +1731,18 @@ public class tk2dSpriteCollectionBuilder
 				}
 				else
 				{
-					coll.spriteDefinitions[i].flipped = atlasEntry.flipped ? tk2dSpriteDefinition.FlipMode.Tk2d : tk2dSpriteDefinition.FlipMode.None;
+					bool flipped = (atlasEntry != null && atlasEntry.flipped);
+					coll.spriteDefinitions[i].flipped = flipped ? tk2dSpriteDefinition.FlipMode.Tk2d : tk2dSpriteDefinition.FlipMode.None;
 					
-					float x0 = _lut.rx / texWidth;
-					float y0 = _lut.ry / texHeight;
-					float x1 = (_lut.rx + _lut.rw) / texWidth;
-					float y1 = (_lut.ry + _lut.rh) / texHeight;
+					float x0 = 0, y0 = 0;
+					float x1 = 0, y1 = 0;
+
+					if (_lut != null) {
+						x0 = _lut.rx / texWidth;
+						y0 = _lut.ry / texHeight;
+						x1 = (_lut.rx + _lut.rw) / texWidth;
+						y1 = (_lut.ry + _lut.rh) / texHeight;
+					}
 
 					Vector3 dpos0 = new Vector3(Mathf.Lerp(pos0.x, pos1.x, x0), 0.0f, Mathf.Lerp(pos0.z, pos1.z, y0));
 					Vector3 dpos1 = new Vector3(Mathf.Lerp(pos0.x, pos1.x, x1), 0.0f, Mathf.Lerp(pos0.z, pos1.z, y1));
@@ -1718,7 +1752,7 @@ public class tk2dSpriteCollectionBuilder
 					positions.Add(new Vector3(dpos0.x, dpos1.z, 0));
 					positions.Add(new Vector3(dpos1.x, dpos1.z, 0));
 
-	                if (atlasEntry.flipped)
+	                if (flipped)
 	                {
 	                    uvs.Add(new Vector2(v0.x,v0.y));
 	                    uvs.Add(new Vector2(v0.x,v1.y));

@@ -1,4 +1,3 @@
-C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\obj\Debug\UnityVS.Telekinesis.CSharp.Editor.csprojResolveAssemblyReference.cache
 C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\Temp\UnityVS_bin\Debug\Assembly-CSharp-Editor.dll
 C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\Temp\UnityVS_bin\Debug\Assembly-CSharp-Editor.pdb
 C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\Temp\UnityVS_bin\Debug\SyntaxTree.VisualStudio.Unity.Bridge.dll
@@ -7,6 +6,6 @@ C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\Temp\UnityVS_bin\Deb
 C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\Temp\UnityVS_bin\Debug\tk2dSkin.dll
 C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\Temp\UnityVS_bin\Debug\UnityEditor.dll
 C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\Temp\UnityVS_bin\Debug\UnityEngine.dll
+C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\obj\Debug\UnityVS.Telekinesis.CSharp.Editor.csprojResolveAssemblyReference.cache
 C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\obj\Debug\Assembly-CSharp-Editor.dll
 C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\obj\Debug\Assembly-CSharp-Editor.pdb
-C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\Temp\UnityVS_bin\Debug\Assembly-CSharp.pdb

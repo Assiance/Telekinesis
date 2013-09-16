@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.MyGenericScripts.Framework
 {
-    public class MyMonoBehaviour : MonoBehaviour
+    public abstract class MyMonoBehaviour : MonoBehaviour
     {
     }
 }

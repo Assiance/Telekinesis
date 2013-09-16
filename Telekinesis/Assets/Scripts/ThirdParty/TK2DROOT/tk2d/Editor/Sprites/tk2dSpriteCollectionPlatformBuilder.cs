@@ -184,6 +184,10 @@ namespace tk2dEditor.SpriteCollectionBuilder
 						param.boxColliderMax *= scale;
 						param.boxColliderMin *= scale;
 					}
+
+					for (int i = 0; i < param.attachPoints.Count; ++i) {
+						param.attachPoints[i].position = param.attachPoints[i].position * scale;
+					}
 				}
 			}
 

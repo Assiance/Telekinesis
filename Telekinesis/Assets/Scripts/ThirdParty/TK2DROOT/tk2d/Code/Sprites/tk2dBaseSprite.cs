@@ -134,6 +134,18 @@ public abstract class tk2dBaseSprite : MonoBehaviour, tk2dRuntime.ISpriteCollect
 		}
 	}
 	
+	[SerializeField] protected int renderLayer = 0;
+	/// <summary>
+	/// Gets or sets the sorting order
+	/// The sorting order lets you override draw order for sprites which are at the same z position
+	/// It is similar to offsetting in z - the sprite stays at the original position
+	/// This corresponds to the renderer.sortingOrder property in Unity 4.3
+	/// </summary>
+	public int SortingOrder {
+		get { return renderLayer; }
+		set { if (renderLayer != value) { renderLayer = value; InitInstance(); UpdateVertices(); } }
+	}
+
 	/// <summary>
 	/// Flips the sprite horizontally. Set FlipX to true to flip it horizontally.
 	/// Note: The sprite itself may be flipped by the hierarchy above it or localScale
@@ -407,7 +419,7 @@ public abstract class tk2dBaseSprite : MonoBehaviour, tk2dRuntime.ISpriteCollect
 		InitInstance();
 		var sprite = collectionInst.spriteDefinitions[_spriteId];
 		return new Bounds(new Vector3(sprite.boundsData[0].x * _scale.x, sprite.boundsData[0].y * _scale.y, sprite.boundsData[0].z * _scale.z),
-		                  new Vector3(sprite.boundsData[1].x * _scale.x, sprite.boundsData[1].y * _scale.y, sprite.boundsData[1].z * _scale.z));
+		                  new Vector3(sprite.boundsData[1].x * Mathf.Abs(_scale.x), sprite.boundsData[1].y * Mathf.Abs(_scale.y), sprite.boundsData[1].z * Mathf.Abs(_scale.z) ));
 	}
 	
 	/// <summary>
@@ -422,7 +434,14 @@ public abstract class tk2dBaseSprite : MonoBehaviour, tk2dRuntime.ISpriteCollect
 		InitInstance();
 		var sprite = collectionInst.spriteDefinitions[_spriteId];
 		return new Bounds(new Vector3(sprite.untrimmedBoundsData[0].x * _scale.x, sprite.untrimmedBoundsData[0].y * _scale.y, sprite.untrimmedBoundsData[0].z * _scale.z),
-		                  new Vector3(sprite.untrimmedBoundsData[1].x * _scale.x, sprite.untrimmedBoundsData[1].y * _scale.y, sprite.untrimmedBoundsData[1].z * _scale.z));
+		                  new Vector3(sprite.untrimmedBoundsData[1].x * Mathf.Abs(_scale.x), sprite.untrimmedBoundsData[1].y * Mathf.Abs(_scale.y), sprite.untrimmedBoundsData[1].z * Mathf.Abs(_scale.z) ));
+	}
+
+	public static Bounds AdjustedMeshBounds(Bounds bounds, int renderLayer) {
+		Vector3 center = bounds.center;
+		center.z = -renderLayer * 0.01f;
+		bounds.center = center;
+		return bounds;
 	}
 	
 	/// <summary>
@@ -448,6 +467,13 @@ public abstract class tk2dBaseSprite : MonoBehaviour, tk2dRuntime.ISpriteCollect
 			InitInstance();
 			return (collectionInst == null) ? null : collectionInst.spriteDefinitions[_spriteId];
 		}
+	}
+
+	/// <summary>
+	/// Used for sprite resizing in Editor, and UILayout.
+	/// </summary>
+	public virtual void ReshapeBounds(Vector3 dMin, Vector3 dMax) {
+		;
 	}
 
 	// Collider setup

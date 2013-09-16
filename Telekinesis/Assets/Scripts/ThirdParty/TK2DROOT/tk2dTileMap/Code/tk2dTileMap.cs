@@ -8,6 +8,7 @@ public enum tk2dTileFlags {
 	None = 0x00000000,
 	FlipX = 0x01000000,
 	FlipY = 0x02000000,
+	Rot90 = 0x04000000,
 }
 
 [ExecuteInEditMode]
@@ -157,7 +158,19 @@ public class tk2dTileMap : MonoBehaviour, tk2dRuntime.ISpriteCollectionForceBuil
 		ForceBuild = 2
 	};
 	
+
+	/// <summary>
+	/// Builds the tilemap. Call this after using the SetTile functions to
+	/// rebuild the affected partitions. Build only rebuilds affected partitions
+	/// and is efficent enough to use at runtime if you don't use Unity colliders.
+	/// Avoid building tilemaps every frame if you use Unity colliders as it will 
+	/// likely be too slow for runtime use.
+	/// </summary>
 	public void Build() { Build(BuildFlags.Default); }
+
+	/// <summary>
+	/// Like <see cref="T:Build"/> above, but forces a build of all partitions.
+	/// </summary>
 	public void ForceBuild() { Build(BuildFlags.ForceBuild); }
 	
 	// Clears all spawned instances, but retains the renderData object

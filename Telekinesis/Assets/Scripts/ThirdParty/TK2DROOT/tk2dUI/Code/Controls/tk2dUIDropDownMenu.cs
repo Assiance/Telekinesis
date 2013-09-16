@@ -21,6 +21,7 @@ public class tk2dUIDropDownMenu : MonoBehaviour
     /// <summary>
     /// Visual height of this ui item, used for spacing
     /// </summary>
+	[HideInInspector]
     public float height;
 
     /// <summary>
@@ -58,6 +59,8 @@ public class tk2dUIDropDownMenu : MonoBehaviour
     /// </summary>
     public event System.Action OnSelectedItemChange;
 
+    public string SendMessageOnSelectedItemChangeMethodName = "";
+
     private int index;
 
     /// <summary>
@@ -91,9 +94,50 @@ public class tk2dUIDropDownMenu : MonoBehaviour
         }
     }
 
+    public GameObject SendMessageTarget
+    {
+        get
+        {
+            if (dropDownButton != null)
+            {
+                return dropDownButton.sendMessageTarget;
+            }
+            else return null;
+        }
+        set
+        {
+            if (dropDownButton != null && dropDownButton.sendMessageTarget != value)
+            {
+                dropDownButton.sendMessageTarget = value;
+            
+                #if UNITY_EDITOR
+                    UnityEditor.EditorUtility.SetDirty(dropDownButton);
+                #endif
+            }
+        }
+    }
+
     private List<tk2dUIDropDownItem> dropDownItems = new List<tk2dUIDropDownItem>();
 
     private bool isExpanded = false; //is currently in expanded state
+
+	[SerializeField]
+	[HideInInspector]
+	private tk2dUILayout menuLayoutItem = null;
+
+	public tk2dUILayout MenuLayoutItem {
+		get { return menuLayoutItem; }
+		set { menuLayoutItem = value; }
+	}
+
+	[SerializeField]
+	[HideInInspector]
+	private tk2dUILayout templateLayoutItem = null;
+
+	public tk2dUILayout TemplateLayoutItem {
+		get { return templateLayoutItem; }
+		set { templateLayoutItem = value; }
+	}
 
     void Awake()
     {
@@ -105,6 +149,8 @@ public class tk2dUIDropDownMenu : MonoBehaviour
 #if UNITY_3_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5 || UNITY_3_6 || UNITY_3_7 || UNITY_3_8 || UNITY_3_9
         //disable all items in template, do make it so Unity 4.x works nicely
         dropDownItemTemplate.gameObject.SetActiveRecursively(false);
+#else
+		dropDownItemTemplate.gameObject.SetActive(false);
 #endif
         UpdateList();
     }
@@ -147,7 +193,10 @@ public class tk2dUIDropDownMenu : MonoBehaviour
         {
             item = dropDownItems[p];
             localPos = item.transform.localPosition;
-            localPos.y = -height - (p * item.height);
+            if (menuLayoutItem != null && templateLayoutItem != null)
+				localPos.y = menuLayoutItem.bMin.y - (p * (templateLayoutItem.bMax.y - templateLayoutItem.bMin.y));
+			else
+				localPos.y = -height - (p * item.height);
             item.transform.localPosition = localPos;
             if (item.label != null)
             {
@@ -180,6 +229,11 @@ public class tk2dUIDropDownMenu : MonoBehaviour
         }
 
         if (OnSelectedItemChange != null) { OnSelectedItemChange(); }
+
+        if (SendMessageTarget != null && SendMessageOnSelectedItemChangeMethodName.Length > 0)
+        {
+            SendMessageTarget.SendMessage( SendMessageOnSelectedItemChangeMethodName, this, SendMessageOptions.RequireReceiver );
+        }  
     }
 
     //clones another dropdown item from template
@@ -233,13 +287,14 @@ public class tk2dUIDropDownMenu : MonoBehaviour
     private void ExpandList()
     {
         isExpanded = true;
-        foreach (tk2dUIDropDownItem item in dropDownItems)
+        int count = Mathf.Min( ItemList.Count, dropDownItems.Count );
+        for(int i = 0; i < count; ++i)
         {
 #if UNITY_3_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5 || UNITY_3_6 || UNITY_3_7 || UNITY_3_8 || UNITY_3_9
-            item.gameObject.SetActiveRecursively(true);
-            item.upDownHoverBtn.SetState(); //deals with how active recursive needs to work in Unity 3.x
+            dropDownItems[i].gameObject.SetActiveRecursively(true);
+            dropDownItems[i].upDownHoverBtn.SetState(); //deals with how active recursive needs to work in Unity 3.x
 #else
-            item.gameObject.SetActive(true);
+            dropDownItems[i].gameObject.SetActive(true);
 #endif
         }
 

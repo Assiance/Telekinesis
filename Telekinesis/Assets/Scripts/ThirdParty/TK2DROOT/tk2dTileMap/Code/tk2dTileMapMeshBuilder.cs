@@ -49,6 +49,7 @@ namespace tk2dRuntime.TileMap
 					int tile = BuilderUtil.GetTileFromRawTile(spriteId);
 					bool flipH = BuilderUtil.IsRawTileFlagSet(spriteId, tk2dTileFlags.FlipX);
 					bool flipV = BuilderUtil.IsRawTileFlagSet(spriteId, tk2dTileFlags.FlipY);
+					bool rot90 = BuilderUtil.IsRawTileFlagSet(spriteId, tk2dTileFlags.Rot90);
 
 					Vector3 currentPos = new Vector3(tileSize.x * (x + xOffset), tileSize.y * y, 0);
 	
@@ -63,7 +64,7 @@ namespace tk2dRuntime.TileMap
 					int baseVertex = meshVertices.Count;
 					for (int v = 0; v < sprite.positions.Length; ++v)
 					{
-						Vector3 flippedPos = BuilderUtil.FlipSpriteVertexPosition(tileMap, sprite, sprite.positions[v], flipH, flipV);
+						Vector3 flippedPos = BuilderUtil.ApplySpriteVertexTileFlags(tileMap, sprite, sprite.positions[v], flipH, flipV, rot90);
 
 						if (useColor)
 						{

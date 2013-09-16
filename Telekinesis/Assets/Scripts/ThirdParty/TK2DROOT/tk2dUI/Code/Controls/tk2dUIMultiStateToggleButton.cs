@@ -24,6 +24,8 @@ public class tk2dUIMultiStateToggleButton : tk2dUIBaseItemControl
     public event System.Action<tk2dUIMultiStateToggleButton> OnStateToggle;
     private int index = 0;
 
+    public string SendMessageOnStateToggleMethodName = "";
+
     /// <summary>
     /// Currently selected index of active state
     /// </summary>
@@ -45,6 +47,7 @@ public class tk2dUIMultiStateToggleButton : tk2dUIBaseItemControl
                 index = value;
                 SetState();
                 if (OnStateToggle != null) { OnStateToggle(this); }
+                base.DoSendMessage( SendMessageOnStateToggleMethodName, this );
             }
         }
     }

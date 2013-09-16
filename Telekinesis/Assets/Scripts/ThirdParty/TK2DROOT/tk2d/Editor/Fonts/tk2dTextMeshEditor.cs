@@ -172,6 +172,10 @@ class tk2dTextMeshEditor : Editor
 			// Move targeted sprites
 			tk2dSceneHelper.HandleMoveSprites(t, localRect);
 		}
+
+    	if (GUI.changed) {
+    		EditorUtility.SetDirty(target);
+    	}
 	}
 
 	void UndoableAction( System.Action<tk2dTextMesh> action ) {
@@ -309,6 +313,11 @@ class tk2dTextMeshEditor : Editor
 				GUI.changed = true;
 			}
 			GUILayout.EndHorizontal();
+
+			if (textMesh.NumTotalCharacters() > textMesh.maxChars) {
+				tk2dGuiUtility.InfoBox( "Number of printable characters in text mesh exceeds MaxChars on this text mesh. "+
+					 					"The text will be clipped at " + textMesh.maxChars.ToString() + " characters.", tk2dGuiUtility.WarningLevel.Error );
+			}
 			
 			TextAnchor newTextAnchor = (TextAnchor)EditorGUILayout.EnumPopup("Anchor", textMesh.anchor);
 			if (newTextAnchor != textMesh.anchor) UndoableAction( tm => tm.anchor = newTextAnchor );
@@ -321,6 +330,9 @@ class tk2dTextMeshEditor : Editor
 
 			float newLineSpacing = EditorGUILayout.FloatField("Line Spacing", textMesh.LineSpacing);
 			if (newLineSpacing != textMesh.LineSpacing) UndoableAction( tm => tm.LineSpacing = newLineSpacing );
+
+			int sortingOrder = EditorGUILayout.IntField("Sorting Order In Layer", textMesh.SortingOrder);
+			if (sortingOrder != textMesh.SortingOrder) { UndoableAction( tm => tm.SortingOrder = sortingOrder ); }
 
 			Vector3 newScale = EditorGUILayout.Vector3Field("Scale", textMesh.scale);
 			if (newScale != textMesh.scale) UndoableAction( tm => tm.scale = newScale );

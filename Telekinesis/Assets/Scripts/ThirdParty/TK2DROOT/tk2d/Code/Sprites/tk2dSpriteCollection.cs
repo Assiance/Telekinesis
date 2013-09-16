@@ -95,6 +95,13 @@ public class tk2dSpriteCollectionDefinition
 		SpriteSheet,
 		Font
 	}
+
+	public enum DiceFilter
+	{
+		Complete,
+		SolidOnly,
+		TransparentOnly,
+	}
 	
 	public string name = "";
 	
@@ -120,7 +127,8 @@ public class tk2dSpriteCollectionDefinition
 	public bool dice = false;
 	public int diceUnitX = 64;
 	public int diceUnitY = 64;
-	
+	public DiceFilter diceFilter = DiceFilter.Complete;
+
 	public Pad pad = Pad.Default;
 	public int extraPadding = 0; // default
 	
@@ -164,6 +172,7 @@ public class tk2dSpriteCollectionDefinition
 		dice = src.dice;
 		diceUnitX = src.diceUnitX;
 		diceUnitY = src.diceUnitY;
+		diceFilter = src.diceFilter;
 		pad = src.pad;
 		
 		source = src.source;
@@ -248,6 +257,7 @@ public class tk2dSpriteCollectionDefinition
 		if (dice != src.dice) return false;
 		if (diceUnitX != src.diceUnitX) return false;
 		if (diceUnitY != src.diceUnitY) return false;
+		if (diceFilter != src.diceFilter) return false;
 		if (pad != src.pad) return false;
 		if (extraPadding != src.extraPadding) return false;
 
@@ -501,11 +511,11 @@ public class tk2dSpriteCollection : MonoBehaviour
 	public bool HasPlatformData { get { return platforms.Count > 1; } }
 	public bool loadable = false;
 	
-	public int maxTextureSize = 1024;
+	public int maxTextureSize = 2048;
 	
 	public bool forceTextureSize = false;
-	public int forcedTextureWidth = 1024;
-	public int forcedTextureHeight = 1024;
+	public int forcedTextureWidth = 2048;
+	public int forcedTextureHeight = 2048;
 	
 	public enum TextureCompression
 	{

@@ -33,7 +33,7 @@ public class tk2dPreferences {
 		set { if (_animListWidth != value) _animListWidth = value; Save(); }
 	}
 	public int animInspectorWidth {
-		get { return _animInspectorWidth; }
+		get { return Mathf.Max(_animInspectorWidth, _minSpriteCollectionInspectorWidth); }
 		set { if (_animInspectorWidth != value) _animInspectorWidth = value; Save(); }
 	}
 	public int animFrameWidth {
@@ -47,7 +47,7 @@ public class tk2dPreferences {
 
 	int _spriteCollectionListWidth = 200;
 	int _spriteCollectionInspectorWidth = 260;
-	int _minSpriteCollectionInspectorWidth = 190;
+	const int _minSpriteCollectionInspectorWidth = 190;
 	int _animListWidth = 200;
 	int _animInspectorWidth = 260;
 	int _animFrameWidth = -1;
@@ -118,7 +118,7 @@ public class tk2dPreferences {
 			try {
 				string s = EditorPrefs.GetString(keyName, "");
 				if (s.Length > 0) {
-					System.IO.MemoryStream ms = new System.IO.MemoryStream(System.Text.Encoding.UTF8.GetBytes(s));
+						System.IO.MemoryStream ms = new System.IO.MemoryStream(System.Text.Encoding.UTF8.GetBytes(s));
 					System.Xml.XmlReader reader = new System.Xml.XmlTextReader(ms);
 					System.Xml.Serialization.XmlSerializer x = new System.Xml.Serialization.XmlSerializer(typeof(tk2dPreferences));
 					returnValue = (tk2dPreferences)x.Deserialize(reader);

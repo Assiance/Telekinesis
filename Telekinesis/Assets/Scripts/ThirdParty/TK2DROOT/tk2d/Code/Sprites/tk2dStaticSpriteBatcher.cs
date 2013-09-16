@@ -32,6 +32,7 @@ public class tk2dBatchedSprite
 	public Vector3 localScale = Vector3.one;
 	public Color color = Color.white;
 	public Vector3 baseScale = Vector3.one; // sprite/textMesh scale
+	public int renderLayer = 0;
 	
 	[SerializeField]
 	Vector2 internalData0; // Used for clipped region or sliced border

@@ -166,21 +166,10 @@ class tk2dSlicedSpriteEditor : tk2dSpriteEditor
 			EditorGUI.BeginChangeCheck ();
 			Rect resizeRect = tk2dSceneHelper.RectControl(123192, localRect, t);
 			if (EditorGUI.EndChangeCheck ()) {
-				Vector2 newDim = new Vector2(resizeRect.width / (sprite.texelSize.x * spr.scale.x), resizeRect.height / (sprite.texelSize.y * spr.scale.y));
-				newDim.x = Mathf.Abs (newDim.x);
-				newDim.y = Mathf.Abs (newDim.y);
 				Undo.RegisterUndo (new Object[] {t, spr}, "Resize");
-				if (newDim != spr.dimensions) {
-					spr.dimensions = newDim;
-					Vector2 newAnchorOffset = tk2dSceneHelper.GetAnchorOffset (new Vector2(resizeRect.width, resizeRect.height), spr.anchor);
-					Vector3 toNewAnchorPos = new Vector3(resizeRect.xMin - newAnchorOffset.x, resizeRect.yMin - newAnchorOffset.y, 0);
-					Vector3 newPosition = t.TransformPoint (toNewAnchorPos);
-					if (newPosition != t.position) {
-						t.position = newPosition;
-					}
-
-					EditorUtility.SetDirty(spr);
-				}
+				spr.ReshapeBounds(new Vector3(resizeRect.xMin, resizeRect.yMin) - new Vector3(localRect.xMin, localRect.yMin),
+					new Vector3(resizeRect.xMax, resizeRect.yMax) - new Vector3(localRect.xMax, localRect.yMax));
+				EditorUtility.SetDirty(spr);
 			}
 		}
 		// Rotate handles
@@ -203,6 +192,10 @@ class tk2dSlicedSpriteEditor : tk2dSpriteEditor
 
 		// Move targeted sprites
 		tk2dSceneHelper.HandleMoveSprites(t, localRect);
+
+    	if (GUI.changed) {
+    		EditorUtility.SetDirty(target);
+    	}
 	}
 
 	[MenuItem("GameObject/Create Other/tk2d/Sliced Sprite", false, 12901)]

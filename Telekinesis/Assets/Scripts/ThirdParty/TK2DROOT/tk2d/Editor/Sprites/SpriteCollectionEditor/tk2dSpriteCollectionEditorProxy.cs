@@ -454,6 +454,15 @@ namespace tk2dEditor.SpriteCollectionEditor
 			} while(count < 1024); // arbitrary large number
 			return name; // failed to find a name
 		}
+
+		public int FindSpriteBySource(Texture2D tex) {
+			for (int i = 0; i < textureParams.Count; ++i) {
+				if (textureParams[i].texture == tex) {
+					return i;
+				}
+			}
+			return -1;
+		}
 		
 		public bool Empty { get { return textureParams.Count == 0 && fonts.Count == 0 && spriteSheets.Count == 0; } }
 		

@@ -12,6 +12,20 @@ public abstract class tk2dUIBaseItemControl : MonoBehaviour
     /// </summary>
     public tk2dUIItem uiItem;
 
+    public GameObject SendMessageTarget {
+        get {
+            if (uiItem != null) {
+                return uiItem.sendMessageTarget;
+            }
+            else return null;
+        }
+        set {
+            if (uiItem != null) {
+                uiItem.sendMessageTarget = value;
+            }
+        }
+    }
+
     /// <summary>
     /// Used for SetActive so easily works between Unity 3.x and Unity 4.x
     /// </summary>
@@ -35,5 +49,11 @@ public abstract class tk2dUIBaseItemControl : MonoBehaviour
         }
     }
 
+    protected void DoSendMessage( string methodName, object parameter )
+    {
+        if (SendMessageTarget != null && methodName.Length > 0)
+        {
+            SendMessageTarget.SendMessage( methodName, parameter, SendMessageOptions.RequireReceiver );
+        }
+    }
 }
-

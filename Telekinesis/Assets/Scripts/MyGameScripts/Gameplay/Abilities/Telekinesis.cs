@@ -14,9 +14,10 @@ namespace Assets.Scripts.MyGameScripts.Gameplay.Abilities
         private float _verticalPushStrength { get; set; }
         private Rigidbody _targetRigidBody { get; set; }
 
-        public Telekinesis(Entity entity)
-            : base(entity)
+        protected override void Start()
         {
+            base.Start();
+
             _horizontalPushStrength = 100f;
             _verticalPushStrength = 75f;
         }

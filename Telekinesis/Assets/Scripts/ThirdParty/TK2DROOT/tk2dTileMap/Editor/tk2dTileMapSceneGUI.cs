@@ -356,6 +356,7 @@ public class tk2dTileMapSceneGUI
 			PickUpBrush(editorData.activeBrush, false);
 			tk2dTileMapToolbar.workBrushFlipX = false;
 			tk2dTileMapToolbar.workBrushFlipY = false;
+			tk2dTileMapToolbar.workBrushRot90 = false;
 		}
 		if (tk2dTileMapToolbar.mainMode == tk2dTileMapToolbar.MainMode.Erase || tk2dTileMapToolbar.mainMode == tk2dTileMapToolbar.MainMode.Cut) {
 			int x0 = Mathf.Min(cursorX, cursorX0);
@@ -831,6 +832,7 @@ public class tk2dTileMapSceneGUI
 			PickUpBrush(editorData.activeBrush, false);
 			tk2dTileMapToolbar.workBrushFlipX = false;
 			tk2dTileMapToolbar.workBrushFlipY = false;
+			tk2dTileMapToolbar.workBrushRot90 = false;
 
 			scratchpadGUI.requestSelectAllTiles = false;
 		}
@@ -896,6 +898,7 @@ public class tk2dTileMapSceneGUI
 
 		bool flipH = tk2dTileMapToolbar.workBrushFlipX;
 		bool flipV = tk2dTileMapToolbar.workBrushFlipY;
+		bool rot90 = tk2dTileMapToolbar.workBrushRot90;
 
 		if (tk2dTileMapToolbar.mainMode == tk2dTileMapToolbar.MainMode.Brush) {
 			if (rectX1 == rectX2 && rectY1 == rectY2) {
@@ -907,6 +910,12 @@ public class tk2dTileMapSceneGUI
 					int tx = srcTiles[i].x;
 					int ty = srcTiles[i].y;
 
+					if (rot90) {
+						int tmp = tx;
+						tx = ty;
+						ty = -tmp;
+						tk2dRuntime.TileMap.BuilderUtil.SetRawTileFlag(ref spriteId, tk2dTileFlags.Rot90, true);
+					}
 					if (flipH) {
 						tx = -tx;
 						tk2dRuntime.TileMap.BuilderUtil.InvertRawTileFlag(ref spriteId, tk2dTileFlags.FlipX);
@@ -956,6 +965,8 @@ public class tk2dTileMapSceneGUI
 								break;
 							}
 						}
+						if (rot90)
+							tk2dRuntime.TileMap.BuilderUtil.SetRawTileFlag(ref spriteId, tk2dTileFlags.Rot90, true);
 						if (flipH)
 							tk2dRuntime.TileMap.BuilderUtil.InvertRawTileFlag(ref spriteId, tk2dTileFlags.FlipX);
 						if (flipV)

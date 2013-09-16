@@ -28,7 +28,6 @@ class tk2dSpriteEditor : Editor
 		Transform t = spr.transform;
 		Bounds b = spr.GetUntrimmedBounds();
 		Rect localRect = new Rect(b.min.x, b.min.y, b.size.x, b.size.y);
-		Vector3 unscaledBoundsSize = sprite.untrimmedBoundsData[1];
 
 		// Draw rect outline
 		Handles.color = new Color(1,1,1,0.5f);
@@ -40,20 +39,10 @@ class tk2dSpriteEditor : Editor
 			EditorGUI.BeginChangeCheck ();
 			Rect resizeRect = tk2dSceneHelper.RectControl (999888, localRect, t);
 			if (EditorGUI.EndChangeCheck ()) {
-				Vector3 newScale = new Vector3 (resizeRect.width / unscaledBoundsSize.x, resizeRect.height / unscaledBoundsSize.y, spr.scale.z);
-				if (newScale != spr.scale) {
-					Undo.RegisterUndo (new Object[] {t, spr}, "Resize");
-					float factorX = (Mathf.Abs (spr.scale.x) > Mathf.Epsilon) ? (newScale.x / spr.scale.x) : 0.0f;
-					float factorY = (Mathf.Abs (spr.scale.y) > Mathf.Epsilon) ? (newScale.y / spr.scale.y) : 0.0f;
-					Vector3 offset = new Vector3(resizeRect.xMin - localRect.xMin * factorX,
-					                             resizeRect.yMin - localRect.yMin * factorY, 0.0f);
-					Vector3 newPosition = t.TransformPoint (offset);
-					if (newPosition != t.position) {
-						t.position = newPosition;
-					}
-					spr.scale = newScale;
-					EditorUtility.SetDirty(spr);
-				}
+				Undo.RegisterUndo (new Object[] {t, spr}, "Resize");
+				spr.ReshapeBounds(new Vector3(resizeRect.xMin, resizeRect.yMin) - new Vector3(localRect.xMin, localRect.yMin),
+					new Vector3(resizeRect.xMax, resizeRect.yMax) - new Vector3(localRect.xMax, localRect.yMax));
+				EditorUtility.SetDirty(spr);
 			}
 		}
 		// Rotate handles
@@ -74,6 +63,10 @@ class tk2dSpriteEditor : Editor
 
 		// Move targeted sprites
     	tk2dSceneHelper.HandleMoveSprites(t, localRect);
+
+    	if (GUI.changed) {
+    		EditorUtility.SetDirty(target);
+    	}
 	}
 
     protected T[] GetTargetsOfType<T>( Object[] objects ) where T : UnityEngine.Object {
@@ -167,6 +160,15 @@ class tk2dSpriteEditor : Editor
             		s.color = newColor;
             	}
             }
+
+			int sortingOrder = EditorGUILayout.IntField("Sorting Order In Layer", targetSprites[0].SortingOrder);
+			if (sortingOrder != targetSprites[0].SortingOrder) {
+            	Undo.RegisterUndo(targetSprites, "Sorting Order In Layer");
+            	foreach (tk2dBaseSprite s in targetSprites) {
+            		s.SortingOrder = sortingOrder;
+            	}
+			}
+
 			Vector3 newScale = EditorGUILayout.Vector3Field("Scale", targetSprites[0].scale);
 			if (newScale != targetSprites[0].scale)
 			{

@@ -304,10 +304,18 @@ public class tk2dCameraEditor : Editor
 		bool oldGuiEnabled = GUI.enabled;
 
 		SerializedObject so = this.serializedObject;
-		SerializedProperty m_ClearFlags = so.FindProperty("cameraSettings.clearFlags");
-		SerializedProperty m_BackGroundColor = so.FindProperty("cameraSettings.backgroundColor");
-		SerializedProperty m_CullingMask = so.FindProperty("cameraSettings.cullingMask");
-		SerializedProperty m_TargetTexture = so.FindProperty("cameraSettings.targetTexture");
+		SerializedObject cam = new SerializedObject( target.camera );
+
+		SerializedProperty m_ClearFlags = cam.FindProperty("m_ClearFlags");
+		SerializedProperty m_BackGroundColor = cam.FindProperty("m_BackGroundColor");
+		SerializedProperty m_CullingMask = cam.FindProperty("m_CullingMask");
+		SerializedProperty m_TargetTexture = cam.FindProperty("m_TargetTexture");
+		SerializedProperty m_Near = cam.FindProperty("near clip plane");
+		SerializedProperty m_Far = cam.FindProperty("far clip plane");
+		SerializedProperty m_Depth = cam.FindProperty("m_Depth");
+		SerializedProperty m_RenderingPath = cam.FindProperty("m_RenderingPath");
+		SerializedProperty m_HDR = cam.FindProperty("m_HDR");
+		TransparencySortMode transparencySortMode = target.camera.transparencySortMode;
 
 		if (complete) {
 			EditorGUILayout.PropertyField( m_ClearFlags );
@@ -336,7 +344,7 @@ public class tk2dCameraEditor : Editor
 		}
 		else if (inheritedSettings.projection == tk2dCameraSettings.ProjectionType.Perspective) {
 			inheritedSettings.fieldOfView = EditorGUILayout.Slider("Field of View", inheritedSettings.fieldOfView, 1, 179);
-			inheritedSettings.transparencySortMode = (TransparencySortMode)EditorGUILayout.EnumPopup("Sort mode", inheritedSettings.transparencySortMode);
+			transparencySortMode = (TransparencySortMode)EditorGUILayout.EnumPopup("Sort mode", transparencySortMode);
 		}
 		EditorGUI.indentLevel--;
 		GUI.enabled = oldGuiEnabled;
@@ -347,20 +355,26 @@ public class tk2dCameraEditor : Editor
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(14);
 			GUILayout.Label("Near");
-			cameraSettings.nearClipPlane = Mathf.Min(EditorGUILayout.FloatField(cameraSettings.nearClipPlane), cameraSettings.farClipPlane - 0.01f);
+			if (m_Near != null) EditorGUILayout.PropertyField(m_Near, GUIContent.none, GUILayout.Width(60) );
 			GUILayout.Label("Far");
-			cameraSettings.farClipPlane = Mathf.Max(EditorGUILayout.FloatField(cameraSettings.farClipPlane), cameraSettings.nearClipPlane + 0.01f);
+			if (m_Far != null) EditorGUILayout.PropertyField(m_Far, GUIContent.none, GUILayout.Width(60) );
 			GUILayout.EndHorizontal();
 			cameraSettings.rect = EditorGUILayout.RectField("Normalized View Port Rect", cameraSettings.rect);
 
 			EditorGUILayout.Space();
-			cameraSettings.depth = EditorGUILayout.FloatField("Depth", cameraSettings.depth);
-			cameraSettings.renderingPath = (RenderingPath)EditorGUILayout.EnumPopup("Rendering Path", cameraSettings.renderingPath);
+			if (m_Depth != null) EditorGUILayout.PropertyField(m_Depth);
+			if (m_RenderingPath != null) EditorGUILayout.PropertyField(m_RenderingPath);
 			if (m_TargetTexture != null) EditorGUILayout.PropertyField(m_TargetTexture);
-			cameraSettings.hdr = EditorGUILayout.Toggle("HDR", cameraSettings.hdr);
+			if (m_HDR != null) EditorGUILayout.PropertyField(m_HDR);
 		}
 
+		cam.ApplyModifiedProperties();
 		so.ApplyModifiedProperties();
+
+		if (transparencySortMode != target.camera.transparencySortMode) {
+			target.camera.transparencySortMode = transparencySortMode;
+			EditorUtility.SetDirty(target.camera);
+		}
 	}
 
 	void DrawToolsGUI() {
@@ -682,7 +696,6 @@ namespace tk2dEditor
 					Vector2 v = new Vector2(previewWindowRect.x + rs.x, (Camera.current.pixelHeight - previewWindowRect.y - rs.height - heightTweak) + rs.y);
 					previewCamera.CopyFrom(target.camera);
 					previewCamera.projectionMatrix = target.Editor__GetFinalProjectionMatrix(); // Work around a Unity bug
-					previewCamera.transparencySortMode = target.SettingsRoot.CameraSettings.transparencySortMode;
 					previewCamera.pixelRect = new Rect(v.x, v.y, r.width, r.height);
 					previewCamera.Render();
 					break;

@@ -9,10 +9,10 @@ namespace Assets.Scripts.MyGenericScripts.Framework.Components
 
         protected Entity Self { get; set; }
 
-        public Ability(Entity self)
+        protected virtual void Start()
         {
             IsActive = false;
-            Self = self;
+            Self = this.GetComponent<Entity>();
         }
 
         protected abstract void Invoke();

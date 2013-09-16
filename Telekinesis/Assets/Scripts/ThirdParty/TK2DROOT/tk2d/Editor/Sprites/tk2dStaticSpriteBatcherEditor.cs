@@ -23,7 +23,7 @@ class tk2dStaticSpriteBatcherEditor : Editor
 				allTransforms = (from t in allTransforms orderby cam.WorldToScreenPoint((t.renderer != null) ? t.renderer.bounds.center : t.position).z descending select t).ToArray();
 			}
 			else {
-				allTransforms = (from t in allTransforms orderby t.position.z descending select t).ToArray();
+				allTransforms = (from t in allTransforms orderby t.renderer.bounds.center.z descending select t).ToArray();
 			}
 			
 			// and within the z sort by material
@@ -70,6 +70,7 @@ class tk2dStaticSpriteBatcherEditor : Editor
 					bs.type = tk2dBatchedSprite.Type.TextMesh;
 					bs.color = textmesh.color;
 					bs.baseScale = textmesh.scale;
+					bs.renderLayer = textmesh.SortingOrder;
 					bs.localScale = new Vector3(t.localScale.x * textmesh.scale.x, t.localScale.y * textmesh.scale.y, t.localScale.z * textmesh.scale.z);
 					bs.FormattedText = textmesh.FormattedText;
 
@@ -153,6 +154,7 @@ class tk2dStaticSpriteBatcherEditor : Editor
 		bs.spriteCollection = baseSprite.Collection;
 		bs.baseScale = baseSprite.scale;
 		bs.color = baseSprite.color;
+		bs.renderLayer = baseSprite.SortingOrder;
 		if (baseSprite.boxCollider != null)
 		{
 			bs.BoxColliderOffsetZ = baseSprite.boxCollider.center.z;
@@ -239,8 +241,11 @@ class tk2dStaticSpriteBatcherEditor : Editor
 					break;
 				}
 		}
-		baseSprite.scale = bs.baseScale;
-		baseSprite.color = bs.color;		
+		if (baseSprite != null) {
+			baseSprite.SortingOrder = bs.renderLayer;
+			baseSprite.scale = bs.baseScale;
+			baseSprite.color = bs.color;
+		}
 	}
 
 	void DrawInstanceGUI()
@@ -301,8 +306,9 @@ class tk2dStaticSpriteBatcherEditor : Editor
 					}
 					else {
 						tk2dTextMeshData tmd = batcher.allTextMeshData[bs.xRefId];
-						s.scale = bs.baseScale;
 						s.font = tmd.font;
+						s.scale = bs.baseScale;
+						s.SortingOrder = bs.renderLayer;
 						s.text = tmd.text;
 						s.color = bs.color;
 						s.color2 = tmd.color2;

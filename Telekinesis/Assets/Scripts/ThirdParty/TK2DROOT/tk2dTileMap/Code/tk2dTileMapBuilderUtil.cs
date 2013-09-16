@@ -431,11 +431,20 @@ namespace tk2dRuntime.TileMap
 			rawTile = setValue ? (rawTile | (int)flag) : (rawTile & (int)(~flag));
 		}
 
-		public static Vector3 FlipSpriteVertexPosition(tk2dTileMap tileMap, tk2dSpriteDefinition spriteDef, Vector3 pos, bool flipH, bool flipV) {
+		public static Vector3 ApplySpriteVertexTileFlags(tk2dTileMap tileMap, tk2dSpriteDefinition spriteDef, Vector3 pos, bool flipH, bool flipV, bool rot90) {
 			float cx = tileMap.data.tileOrigin.x + 0.5f * tileMap.data.tileSize.x;
 			float cy = tileMap.data.tileOrigin.y + 0.5f * tileMap.data.tileSize.y;
-			if (flipH) pos.x = cx - (pos.x - cx);
-			if (flipV) pos.y = cy - (pos.y - cy);
+			float dx = pos.x - cx;
+			float dy = pos.y - cy;
+			if (rot90) {
+				float tmp = dx;
+				dx = dy;
+				dy = -tmp;
+			}
+			if (flipH) dx *= -1.0f;
+			if (flipV) dy *= -1.0f;
+			pos.x = cx + dx;
+			pos.y = cy + dy;
 			return pos;
 		}
 	}

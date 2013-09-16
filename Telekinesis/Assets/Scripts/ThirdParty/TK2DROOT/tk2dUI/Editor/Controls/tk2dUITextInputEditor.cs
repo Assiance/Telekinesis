@@ -10,6 +10,19 @@ public class tk2dUITextInputEditor : Editor
     {
         EditorGUIUtility.LookLikeInspector();
         base.OnInspectorGUI();
+
+		tk2dUITextInput textInput = (tk2dUITextInput)target;
+		textInput.LayoutItem = EditorGUILayout.ObjectField("LayoutItem", textInput.LayoutItem, typeof(tk2dUILayout), true) as tk2dUILayout;
+
+        tk2dUIMethodBindingHelper methodBindingUtil = new tk2dUIMethodBindingHelper();
+        textInput.SendMessageTarget = methodBindingUtil.BeginMessageGUI(textInput.SendMessageTarget);
+        methodBindingUtil.MethodBinding( "On Text Change", typeof(tk2dUITextInput), textInput.SendMessageTarget, ref textInput.SendMessageOnTextChangeMethodName );
+        methodBindingUtil.EndMessageGUI();
+
+        if (GUI.changed)
+        {
+            EditorUtility.SetDirty(textInput);
+        }
     }
 
     public void OnSceneGUI()
