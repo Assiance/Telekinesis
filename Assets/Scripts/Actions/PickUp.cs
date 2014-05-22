@@ -9,24 +9,35 @@ namespace Assets.Scripts.Actions
     {
         public bool CanPickUp = false;
         public bool IsHoldingWeapon = false;
+        public KeyCode PickUpInput = KeyCode.P;
+        public KeyCode DropInput = KeyCode.D;
 
-        private Component _pickUpComponent;
+        private Component _pickUpableComponent;
         private Collider2D _other;
 
-        protected void Update()
+        protected void OnEnable()
         {
-            if (Input.GetKeyDown(KeyCode.Keypad8) && CanPickUp && !IsHoldingWeapon)
+            KeyboardEventManager.Instance.RegisterKeyDown(PickUpInput, PickUpItem);
+            KeyboardEventManager.Instance.RegisterKeyDown(DropInput, DropItem);
+        }
+
+        public void PickUpItem(KeyCode key)
+        {
+            if (CanPickUp && !IsHoldingWeapon)
             {
-                this.gameObject.AddComponent(_pickUpComponent.GetType());
+                this.gameObject.AddComponent(_pickUpableComponent.GetType());
                 Destroy(_other.gameObject);
 
                 IsHoldingWeapon = true;
             }
+        }
 
-            if (Input.GetKeyDown(KeyCode.D) && IsHoldingWeapon)
+        public void DropItem(KeyCode key)
+        {
+            if (IsHoldingWeapon)
             {
-                _pickUpComponent = GetComponent(typeof (Pickupable));
-                Destroy(_pickUpComponent);
+                _pickUpableComponent = GetComponent(typeof(Pickupable));
+                Destroy(_pickUpableComponent);
 
                 IsHoldingWeapon = false;
                 Instantiate(Resources.Load("Dagger"), CachedTransform.position, CachedTransform.rotation);
@@ -35,11 +46,11 @@ namespace Assets.Scripts.Actions
 
         protected void OnTriggerEnter2D(Collider2D other)
         {
-            var pickUpComponent = other.GetComponent(typeof (Pickupable));
+            var pickUpableComponent = other.GetComponent(typeof (Pickupable));
 
-            if (pickUpComponent != null)
+            if (pickUpableComponent != null)
             {
-                _pickUpComponent = pickUpComponent;
+                _pickUpableComponent = pickUpableComponent;
                 _other = other;
                 CanPickUp = true;
             }
@@ -47,11 +58,11 @@ namespace Assets.Scripts.Actions
 
         protected void OnTriggerExit2D(Collider2D other)
         {
-            var pickUpComponent = other.GetComponent(typeof (Pickupable));
+            var pickUpableComponent = other.GetComponent(typeof (Pickupable));
 
-            if (pickUpComponent != null)
+            if (pickUpableComponent != null)
             {
-                _pickUpComponent = null;
+                _pickUpableComponent = null;
                 _other = null;
                 CanPickUp = false;
             }

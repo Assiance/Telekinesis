@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts.Framework
 {
-    public abstract class MainGameObjectBehaviour : ESMonoBehaviour
+    public class TrackableObject : ESMonoBehaviour
     {
         protected virtual void OnEnable()
         {

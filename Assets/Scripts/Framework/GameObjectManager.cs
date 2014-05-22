@@ -8,12 +8,10 @@ namespace Assets.Scripts.Framework
     {
         private static GameObjectManager _instance;
         private static IList<GameObject> _gameObjects;
-        private static IList<GameObject> _entityGameObjects;
 
         private GameObjectManager()
         {
             _gameObjects = new List<GameObject>();
-            _entityGameObjects = new List<GameObject>();
         }
 
         public static GameObjectManager Instance
@@ -42,7 +40,7 @@ namespace Assets.Scripts.Framework
         public static List<GameObject> GetGameObjectsThatImplement<T>()
             where T : class
         {
-            var targetObjects = (from item in _entityGameObjects
+            var targetObjects = (from item in _gameObjects
                                  where item is T
                                  select item);
 

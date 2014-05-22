@@ -71,7 +71,7 @@ public class EnergyBar : ESMonoBehaviour
         _energyBar.transform.localScale = new Vector3(CurrentEnergy / MaxEnergy, 1, 1);
     }
 
-    void OnGUI()
+    protected void OnGUI()
     {
         GUI.color = BarColor;
         GUI.DrawTexture(new Rect(XPosition, YPosition, CurrentEnergy, 25), EnergyBarImage);

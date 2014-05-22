@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.General
 {
-    public class Stats : MainGameObjectBehaviour
+    public class Stats : TrackableObject
     {
         public float MaxHealth = 100f;
         public float MaxEnergy = 100f;

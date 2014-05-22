@@ -11,13 +11,12 @@ namespace Assets.Scripts.General
         public Action HasDied;
         public Action HasTakenDamage;
 
-        private IKillable _killable;
+        private IKillable _killableComponent;
         private HealthBar _healthComponent;
-        //private Stats _stats;
 
         protected void OnEnable()
         {
-            _killable = GetComponent(typeof (IKillable)) as IKillable;
+            _killableComponent = GetComponent(typeof (IKillable)) as IKillable;
             _healthComponent = GetComponent(typeof(HealthBar)) as HealthBar;
         }
 
@@ -30,7 +29,7 @@ namespace Assets.Scripts.General
 
             if (_healthComponent.CurrentHealth <= 0)
             {
-                _killable.Kill();
+                _killableComponent.Kill();
 
                 if (HasDied != null)
                     HasDied.Invoke();
