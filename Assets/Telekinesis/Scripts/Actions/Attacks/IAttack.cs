@@ -1,0 +1,8 @@
+﻿
+namespace Assets.Telekinesis.Scripts.Actions.Attacks
+{
+    public interface IAttack
+    {
+        float Damage();
+    }
+}
