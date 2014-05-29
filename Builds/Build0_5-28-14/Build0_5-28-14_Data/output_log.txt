@@ -1,0 +1,88 @@
+Initialize engine version: 4.5.0f6 (fd4616464986)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [nvd3dum.dll 9.18.13.2702]
+    Renderer: NVIDIA GeForce GT 750M  
+    Vendor:   NVIDIA
+    VRAM:     1986 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=0 INTZ=1 RAWZ=0 NULL=1 RESZ=0 SlowINTZ=0
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\development\Telekinesis\Builds\Build0_5-28-14\Build0_5-28-14_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\development\Telekinesis\Builds\Build0_5-28-14\Build0_5-28-14_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\development\Telekinesis\Builds\Build0_5-28-14\Build0_5-28-14_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\development\Telekinesis\Builds\Build0_5-28-14\Build0_5-28-14_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+- Completed reload, in  0.064 seconds
+desktop: 1920x1080 59Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+Platform assembly: C:\development\Telekinesis\Builds\Build0_5-28-14\Build0_5-28-14_Data\Managed\System.Core.dll (this message is harmless)
+Can't add component 'BoxCollider' to Crate because it conflicts with the existing 'Rigidbody2D' derived component!
+UnityEngine.GameObject:Internal_AddComponentWithType(Type)
+UnityEngine.GameObject:AddComponent(Type) (at C:\BuildAgent\work\aeedb04a1292f85a\artifacts\StandalonePlayerGenerated\UnityEngineGameObject.cs:490)
+UnityEngine.GameObject:AddComponent() (at C:\BuildAgent\work\aeedb04a1292f85a\artifacts\StandalonePlayerGenerated\UnityEngineGameObject.cs:502)
+tk2dBaseSprite:CreateCollider() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dBaseSprite.cs:718)
+tk2dSprite:Build() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dSprite.cs:101)
+tk2dSprite:Awake() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dSprite.cs:37)
+
+[C:/BuildAgent/work/aeedb04a1292f85a/Runtime/Export/GameObjectExport.cpp line 82] 
+(Filename: C Line: 0)
+
+Can't add component 'BoxCollider' to Crate because it conflicts with the existing 'Rigidbody2D' derived component!
+UnityEngine.GameObject:Internal_AddComponentWithType(Type)
+UnityEngine.GameObject:AddComponent(Type) (at C:\BuildAgent\work\aeedb04a1292f85a\artifacts\StandalonePlayerGenerated\UnityEngineGameObject.cs:490)
+UnityEngine.GameObject:AddComponent() (at C:\BuildAgent\work\aeedb04a1292f85a\artifacts\StandalonePlayerGenerated\UnityEngineGameObject.cs:502)
+tk2dBaseSprite:UpdateCollider() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dBaseSprite.cs:533)
+tk2dBaseSprite:CreateCollider() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dBaseSprite.cs:755)
+tk2dSprite:Build() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dSprite.cs:101)
+tk2dSprite:Awake() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dSprite.cs:37)
+
+[C:/BuildAgent/work/aeedb04a1292f85a/Runtime/Export/GameObjectExport.cpp line 82] 
+(Filename: C Line: 0)
+
+Can't add component 'BoxCollider' to Crate because it conflicts with the existing 'Rigidbody2D' derived component!
+UnityEngine.GameObject:Internal_AddComponentWithType(Type)
+UnityEngine.GameObject:AddComponent(Type) (at C:\BuildAgent\work\aeedb04a1292f85a\artifacts\StandalonePlayerGenerated\UnityEngineGameObject.cs:490)
+UnityEngine.GameObject:AddComponent() (at C:\BuildAgent\work\aeedb04a1292f85a\artifacts\StandalonePlayerGenerated\UnityEngineGameObject.cs:502)
+tk2dBaseSprite:CreateCollider() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dBaseSprite.cs:718)
+tk2dSprite:Build() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dSprite.cs:101)
+tk2dSprite:Awake() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dSprite.cs:37)
+
+[C:/BuildAgent/work/aeedb04a1292f85a/Runtime/Export/GameObjectExport.cpp line 82] 
+(Filename: C Line: 0)
+
+Can't add component 'BoxCollider' to Crate because it conflicts with the existing 'Rigidbody2D' derived component!
+UnityEngine.GameObject:Internal_AddComponentWithType(Type)
+UnityEngine.GameObject:AddComponent(Type) (at C:\BuildAgent\work\aeedb04a1292f85a\artifacts\StandalonePlayerGenerated\UnityEngineGameObject.cs:490)
+UnityEngine.GameObject:AddComponent() (at C:\BuildAgent\work\aeedb04a1292f85a\artifacts\StandalonePlayerGenerated\UnityEngineGameObject.cs:502)
+tk2dBaseSprite:UpdateCollider() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dBaseSprite.cs:533)
+tk2dBaseSprite:CreateCollider() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dBaseSprite.cs:755)
+tk2dSprite:Build() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dSprite.cs:101)
+tk2dSprite:Awake() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dSprite.cs:37)
+
+[C:/BuildAgent/work/aeedb04a1292f85a/Runtime/Export/GameObjectExport.cpp line 82] 
+(Filename: C Line: 0)
+
+Can't add component 'BoxCollider' to Crate because it conflicts with the existing 'Rigidbody2D' derived component!
+UnityEngine.GameObject:Internal_AddComponentWithType(Type)
+UnityEngine.GameObject:AddComponent(Type) (at C:\BuildAgent\work\aeedb04a1292f85a\artifacts\StandalonePlayerGenerated\UnityEngineGameObject.cs:490)
+UnityEngine.GameObject:AddComponent() (at C:\BuildAgent\work\aeedb04a1292f85a\artifacts\StandalonePlayerGenerated\UnityEngineGameObject.cs:502)
+tk2dBaseSprite:CreateCollider() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dBaseSprite.cs:718)
+tk2dSprite:Build() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dSprite.cs:101)
+tk2dSprite:Awake() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dSprite.cs:37)
+
+[C:/BuildAgent/work/aeedb04a1292f85a/Runtime/Export/GameObjectExport.cpp line 82] 
+(Filename: C Line: 0)
+
+Can't add component 'BoxCollider' to Crate because it conflicts with the existing 'Rigidbody2D' derived component!
+UnityEngine.GameObject:Internal_AddComponentWithType(Type)
+UnityEngine.GameObject:AddComponent(Type) (at C:\BuildAgent\work\aeedb04a1292f85a\artifacts\StandalonePlayerGenerated\UnityEngineGameObject.cs:490)
+UnityEngine.GameObject:AddComponent() (at C:\BuildAgent\work\aeedb04a1292f85a\artifacts\StandalonePlayerGenerated\UnityEngineGameObject.cs:502)
+tk2dBaseSprite:UpdateCollider() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dBaseSprite.cs:533)
+tk2dBaseSprite:CreateCollider() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dBaseSprite.cs:755)
+tk2dSprite:Build() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dSprite.cs:101)
+tk2dSprite:Awake() (at C:\development\Telekinesis\Assets\Community Assets\TK2DROOT\tk2d\Code\Sprites\tk2dSprite.cs:37)
+
+[C:/BuildAgent/work/aeedb04a1292f85a/Runtime/Export/GameObjectExport.cpp line 82] 
+(Filename: C Line: 0)
+
+Platform assembly: C:\development\Telekinesis\Builds\Build0_5-28-14\Build0_5-28-14_Data\Managed\System.dll (this message is harmless)
