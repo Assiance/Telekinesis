@@ -5,3 +5,4 @@ C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\Temp\UnityVS_bin\Deb
 C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\obj\Debug\Assembly-CSharp.dll
 C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\obj\Debug\Assembly-CSharp.pdb
 C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\obj\Debug\UnityVS.Telekinesis.CSharp.csprojResolveAssemblyReference.cache
+C:\Users\Bradford\Documents\Prodigy\Telekinesis\Telekinesis\Temp\UnityVS_bin\Debug\UnityEditor.xml
